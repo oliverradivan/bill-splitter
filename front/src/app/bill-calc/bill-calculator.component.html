@@ -1,5 +1,6 @@
+<div>
 <div class="calculator-card">
-  <h2><i class="fa-solid fa-receipt"></i> Bill & Tip Splitter</h2>
+  <h2><i class="fa-solid fa-receipt"></i> Even Bill & Tip Splitter</h2>
 
   <div class="form-grid">
     <div class="input-group">
@@ -7,7 +8,6 @@
       <input type="number" min="0" [ngModel]="billAmount()" (ngModelChange)="billAmount.set($event)" placeholder="0.00" />
     </div>
 
-  
     <div class="input-group">
       <label>Select Tip %</label>
       <div class="tip-presets">
@@ -42,4 +42,9 @@
   <button class="save-btn" (click)="saveCurrentCalculation()">
     <i class="fa-solid fa-floppy-disk"></i> Save Calculation to DB
   </button>
+</div>
+<hr>
+<div>
+<app-itemized-bill></app-itemized-bill>
+</div>
 </div>

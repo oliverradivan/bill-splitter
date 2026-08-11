@@ -2,17 +2,16 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BillService, CalculationResult } from '../services/bill.service';
+import { ItemizedBillComponent } from '../itemized-bill-calc/itemized-bill.component';
 
 @Component({
   selector: 'app-bill-calculator',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ItemizedBillComponent],
   templateUrl: './bill-calculator.component.html',
-  styleUrls: ['./bill-calculator.component.css']
 })
 export class BillCalculatorComponent {
   private billService = inject(BillService);
-
 
   billAmount = signal<number | null>(null);
   tipPercentage = signal<number | null>(null);
@@ -20,7 +19,6 @@ export class BillCalculatorComponent {
 
   history = signal<CalculationResult[]>([]);
 
-  
   totalTip = computed(() => {
     const bill = this.billAmount() || 0;
     const tip = this.tipPercentage() || 0;

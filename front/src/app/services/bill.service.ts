@@ -28,3 +28,30 @@ export class BillService {
     return this.http.get<CalculationResult[]>(`${this.apiUrl}/history`);
   }
 }
+
+export interface IndividualBreakdown {
+  name: string;
+  individual_amount: number;
+}
+
+export interface ItemizedCalculationPayload {
+  people: IndividualBreakdown[];
+  shared_amount: number;
+  tip_percentage: number;
+}
+
+export interface PersonResult {
+  name: string;
+  individual_amount: number;
+  shared_share: number;
+  tip_share: number;
+  total_to_pay: number;
+}
+
+export interface ItemizedCalculationResult {
+  id?: number;
+  people_results: PersonResult[];
+  grand_total: number;
+  total_tip: number;
+  shared_total: number;
+}

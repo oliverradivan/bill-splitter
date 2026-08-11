@@ -1,0 +1,74 @@
+<div class="calculator-card">
+<div class="calculator-body">
+  <h2><i class="fa-solid fa-receipt"></i> Itemized Bill & Tip Splitter</h2>
+
+  <section class="people-list">
+    @for (person of people(); track $index) {
+      <div class="person-row">
+        <input
+          type="text"
+          [ngModel]="person.name"
+          (ngModelChange)="updatePersonName($index, $event)"
+          placeholder="Name" />
+        <input
+          type="number"
+          [ngModel]="person.individual_amount"
+          (ngModelChange)="updatePersonAmount($index, $event)"
+          placeholder="Amount" />
+        <button (click)="removePerson($index)" [disabled]="people().length <= 1"> <i class="fa-solid fa-trash"></i> </button>
+      </div>
+    }
+    <button (click)="addPerson()">+ Add Person</button>
+  </section>
+
+  <section class="shared-and-tip">
+    <label>
+      Shared amount
+      <input
+        type="number"
+        [ngModel]="sharedAmount()"
+        (ngModelChange)="sharedAmount.set($event)" />
+    </label>
+
+    <div class="input-group">
+      <label>Select Tip %</label>
+      <div class="tip-presets">
+        <button [class.active]="tipPercentage() === 10" (click)="setTip(10)">10% 😡</button>
+        <button [class.active]="tipPercentage() === 15" (click)="setTip(15)">15% 👌</button>
+        <button [class.active]="tipPercentage() === 20" (click)="setTip(20)">20% 🤑</button>
+      </div>
+      <input type="number" min="0" [ngModel]="tipPercentage()" (ngModelChange)="tipPercentage.set($event)" placeholder="Custom Tip %" />
+    </div>
+  </section>
+
+  <section class="summary-box">
+    <div class="summary-item">
+      <span>Tip</span>
+      <strong>{{ totalTip() | number:'1.2-2' }}</strong>
+    </div>
+    <div class="summary-item">
+      <span>Bill</span>
+      <strong>{{ subtotalTotal() | number:'1.2-2' }}</strong>
+    </div>
+    <div class="summary-item highlight">
+      <span>Grand Total</span>
+      <strong>{{ grandTotal() | number:'1.2-2' }}</strong>
+    </div>
+  </section>
+
+  <section class="breakdown">
+    <h3>Per Person</h3>
+    @for (row of breakdown(); track row.name) {
+      <div class="breakdown-row">
+        <span>{{ row.name }}</span>
+        <span>Individual: {{ row.individual | number:'1.2-2' }}  +</span>
+        <span>Shared: {{ row.shared | number:'1.2-2' }}  +</span>
+        <span>Tip: {{ row.tip | number:'1.2-2' }}  =</span>
+        <span><strong>{{ row.totalToPay | number:'1.2-2' }}</strong></span>
+      </div>
+    }
+  </section>
+
+  <button class="save-btn" (click)="saveToDatabase()">Save</button>
+</div>
+</div>
