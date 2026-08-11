@@ -332,17 +332,73 @@
 /* ============ Responsive ============ */
 @media (max-width: 480px) {
   .calculator-card {
-    padding: 24px 18px;
-    border-radius: 16px;
+    padding: 20px 14px;
+    border-radius: 14px;
+    max-width: 100%;
   }
 
+  .calculator-card h2 {
+    font-size: 1.25rem;
+  }
+
+  /* Prevent iOS auto-zoom on focus — inputs need >=16px font */
+  .input-group input,
+  .person-row input,
+  .shared-and-tip input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  /* Bigger tap targets */
   .tip-presets button {
-    padding: 8px 10px;
+    padding: 12px 8px;
     font-size: 0.85rem;
+    min-height: 44px;
   }
 
+  .save-btn {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .person-row {
+    flex-wrap: wrap;
+  }
+
+  .person-row input {
+    min-width: 0;
+  }
+
+  .person-row button {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+
+  /* Stack breakdown into a readable card instead of a cramped grid */
   .breakdown-row {
     grid-template-columns: 1fr;
     gap: 4px;
+    padding: 12px 0;
+  }
+
+  .breakdown-row span,
+  .breakdown-row strong {
+    display: inline-block;
+  }
+
+  .summary-box {
+    padding: 16px 18px;
+    gap: 12px;
+  }
+
+  .summary-item.highlight strong {
+    font-size: 1.35rem;
+  }
+}
+
+/* Extra-narrow phones (SE, older Android) */
+@media (max-width: 360px) {
+  .tip-presets {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
