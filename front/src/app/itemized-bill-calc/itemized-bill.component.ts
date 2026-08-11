@@ -99,9 +99,9 @@ export class ItemizedBillComponent {
       tip_percentage: this.tipPercentage()
     };
 
-    this.billService.saveCalculation(payload as any).subscribe({
-      next: (res) => console.log('Saved itemized bill:', res),
-      error: (err) => console.error('Save error:', err)
+    this.billService.saveItemizedCalculation(payload).subscribe({
+      next: (res) => console.log('Saved bill successfully:', res),
+      error: (err) => console.error('error, couldn\'t save:', err)
     });
   }
 }

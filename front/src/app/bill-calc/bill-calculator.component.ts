@@ -52,14 +52,14 @@ export class BillCalculatorComponent {
       people_count: this.peopleCount()!
     }).subscribe({
       next: () => this.loadHistory(),
-      error: (err) => console.error('Failed to save calculation', err)
+      error: (err) => console.error('error, couldn\'t save:', err)
     });
   }
 
   loadHistory() {
     this.billService.getHistory().subscribe({
       next: (data) => this.history.set(data),
-      error: (err) => console.error('Failed to load history', err)
+      error: (err) => console.error('error, couldn\'t load history:', err)
     });
   }
 }

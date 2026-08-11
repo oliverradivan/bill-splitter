@@ -19,6 +19,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# ============================================================
+# Simple calculator
+# ============================================================
+
 class CalculationRequest(BaseModel):
     bill_amount: float = Field(gt=0, description="Bill must be greater than 0")
     tip_percentage: float = Field(ge=0, description="Tip percentage")
@@ -55,3 +60,93 @@ def calculate_and_save(req: CalculationRequest, db: Session = Depends(get_db)):
 @app.get("/api/v1/history", response_model=List[CalculationResponse])
 def get_history(db: Session = Depends(get_db)):
     return db.query(models.Bill).order_by(models.Bill.created_at.desc()).all()
+
+
+# ============================================================
+# Itemized calculator
+# ============================================================
+
+class PersonInput(BaseModel):
+    name: str
+    individual_amount: float = Field(ge=0)
+
+class ItemizedCalculationRequest(BaseModel):
+    people: List[PersonInput]
+    shared_amount: float = Field(ge=0)
+    tip_percentage: float = Field(ge=0)
+
+class PersonResult(BaseModel):
+    name: str
+    individual_amount: float
+    shared_share: float
+    tip_share: float
+    total_to_pay: float
+
+class ItemizedCalculationResponse(BaseModel):
+    id: int
+    people_results: List[PersonResult]
+    grand_total: float
+    total_tip: float
+    shared_total: float
+
+    class Config:
+        orm_mode = True
+
+@app.post("/api/v1/itemized-calculate", response_model=ItemizedCalculationResponse)
+def calculate_and_save_itemized(req: ItemizedCalculationRequest, db: Session = Depends(get_db)):
+    if not req.people:
+        raise HTTPException(status_code=400, detail="At least one person is required")
+
+    subtotal_individual = sum(p.individual_amount for p in req.people)
+    shared_total = round(subtotal_individual + req.shared_amount, 2)
+    total_tip = round(shared_total * (req.tip_percentage / 100), 2)
+    grand_total = round(shared_total + total_tip, 2)
+
+    shared_per_person = round(req.shared_amount / len(req.people), 2)
+
+    people_results = []
+    for p in req.people:
+        food_total = p.individual_amount + shared_per_person
+        tip_share = round((food_total / shared_total) * total_tip, 2) if shared_total > 0 else 0
+        total_to_pay = round(food_total + tip_share, 2)
+        people_results.append({
+            "name": p.name or "Unnamed",
+            "individual_amount": p.individual_amount,
+            "shared_share": shared_per_person,
+            "tip_share": tip_share,
+            "total_to_pay": total_to_pay
+        })
+
+    db_item = models.ItemizedBill(
+        people=people_results,
+        shared_amount=req.shared_amount,
+        tip_percentage=req.tip_percentage,
+        subtotal=shared_total,
+        total_tip=total_tip,
+        grand_total=grand_total
+    )
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+
+    return {
+        "id": db_item.id,
+        "people_results": people_results,
+        "grand_total": grand_total,
+        "total_tip": total_tip,
+        "shared_total": shared_total
+    }
+
+@app.get("/api/v1/itemized-history", response_model=List[ItemizedCalculationResponse])
+def get_itemized_history(db: Session = Depends(get_db)):
+    results = db.query(models.ItemizedBill).order_by(models.ItemizedBill.created_at.desc()).all()
+    return [
+        {
+            "id": r.id,
+            "people_results": r.people,
+            "grand_total": r.grand_total,
+            "total_tip": r.total_tip,
+            "shared_total": r.subtotal
+        }
+        for r in results
+    ]
