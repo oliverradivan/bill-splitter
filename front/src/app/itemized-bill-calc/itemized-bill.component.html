@@ -29,6 +29,7 @@
       <input
         type="number"
         min="0"
+        (keydown)="blockMinus($event)"
         [ngModel]="sharedAmount()"
         (ngModelChange)="sharedAmount.set($event)" />
     </label>
