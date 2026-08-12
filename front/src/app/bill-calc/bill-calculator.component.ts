@@ -17,6 +17,18 @@ export class BillCalculatorComponent {
   tipPercentage = signal<number | null>(null);
   peopleCount = signal<number | null>(null);
 
+  setBillAmount(value: number | null) {
+    this.billAmount.set(value == null ? null : Math.max(0, value));
+  }
+
+  setTipPercentage(value: number | null) {
+    this.tipPercentage.set(value == null ? null : Math.max(0, value));
+  }
+
+  setPeopleCount(value: number | null) {
+    this.peopleCount.set(value == null ? null : Math.max(0, Math.trunc(value)));
+  }
+
   history = signal<CalculationResult[]>([]);
 
   totalTip = computed(() => {
@@ -43,6 +55,11 @@ export class BillCalculatorComponent {
   saveCurrentCalculation() {
     if (!this.billAmount() || this.billAmount()! <= 0 || !this.peopleCount() || this.peopleCount()! <= 0) {
       alert('Please enter valid positive numbers for Bill and People count.');
+      return;
+    }
+
+    if (this.tipPercentage() != null && this.tipPercentage()! < 0) {
+      alert('Tip percentage cannot be negative.');
       return;
     }
 
