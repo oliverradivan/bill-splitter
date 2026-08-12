@@ -20,10 +20,7 @@ app.add_middleware(
 )
 
 
-# ============================================================
-# Simple calculator
-# ============================================================
-
+#simple calc
 class CalculationRequest(BaseModel):
     bill_amount: float = Field(gt=0, description="Bill must be greater than 0")
     tip_percentage: float = Field(ge=0, description="Tip percentage")
@@ -62,10 +59,11 @@ def get_history(db: Session = Depends(get_db)):
     return db.query(models.Bill).order_by(models.Bill.created_at.desc()).all()
 
 
-# ============================================================
-# Itemized calculator
-# ============================================================
 
+
+
+
+# Itemized calculator
 class PersonInput(BaseModel):
     name: str
     individual_amount: float = Field(ge=0)
@@ -97,18 +95,28 @@ def calculate_and_save_itemized(req: ItemizedCalculationRequest, db: Session = D
     if not req.people:
         raise HTTPException(status_code=400, detail="At least one person is required")
 
+    # bill_subtotal = everyone's individual food + the shared amount (pre-tip)
     subtotal_individual = sum(p.individual_amount for p in req.people)
-    shared_total = round(subtotal_individual + req.shared_amount, 2)
-    total_tip = round(shared_total * (req.tip_percentage / 100), 2)
-    grand_total = round(shared_total + total_tip, 2)
+    bill_subtotal = round(subtotal_individual + req.shared_amount, 2)
+    total_tip = round(bill_subtotal * (req.tip_percentage / 100), 2)
+    grand_total = round(bill_subtotal + total_tip, 2)
 
     shared_per_person = round(req.shared_amount / len(req.people), 2)
 
     people_results = []
-    for p in req.people:
+    running_total = 0.0
+    for i, p in enumerate(req.people):
         food_total = p.individual_amount + shared_per_person
-        tip_share = round((food_total / shared_total) * total_tip, 2) if shared_total > 0 else 0
+        tip_share = round((food_total / bill_subtotal) * total_tip, 2) if bill_subtotal > 0 else 0
         total_to_pay = round(food_total + tip_share, 2)
+
+        is_last = i == len(req.people) - 1
+        if is_last:
+            # Give the last person whatever's left over so the per-person totals always sum to exactly grand_total
+            total_to_pay = round(grand_total - running_total, 2)
+        else:
+            running_total += total_to_pay
+
         people_results.append({
             "name": p.name or "Unnamed",
             "individual_amount": p.individual_amount,
@@ -121,7 +129,7 @@ def calculate_and_save_itemized(req: ItemizedCalculationRequest, db: Session = D
         people=people_results,
         shared_amount=req.shared_amount,
         tip_percentage=req.tip_percentage,
-        subtotal=shared_total,
+        subtotal=bill_subtotal,
         total_tip=total_tip,
         grand_total=grand_total
     )
@@ -134,7 +142,7 @@ def calculate_and_save_itemized(req: ItemizedCalculationRequest, db: Session = D
         "people_results": people_results,
         "grand_total": grand_total,
         "total_tip": total_tip,
-        "shared_total": shared_total
+        "shared_total": bill_subtotal
     }
 
 @app.get("/api/v1/itemized-history", response_model=List[ItemizedCalculationResponse])

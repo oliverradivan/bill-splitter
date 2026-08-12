@@ -41,8 +41,12 @@ export class ItemizedBillComponent {
     const totalSub = this.subtotalTotal();
     const tip = this.totalTip();
     const sharedShare = this.sharedPerPerson();
+    const grand = this.grandTotal();
+    const people = this.people();
 
-    return this.people().map((p) => {
+    let runningTotal = 0;
+
+    return people.map((p, index) => {
       const personIndividual = Number(p.individual_amount) || 0;
       const personFoodTotal = personIndividual + sharedShare;
 
@@ -50,7 +54,17 @@ export class ItemizedBillComponent {
         ? roundToTwo((personFoodTotal / totalSub) * tip)
         : 0;
 
-      const totalToPay = roundToTwo(personFoodTotal + tipShare);
+      let totalToPay = roundToTwo(personFoodTotal + tipShare);
+
+      const isLast = index === people.length - 1;
+      if (isLast) {
+        // Give the last person whatever's left over so the per-person
+        // totals always sum to exactly grandTotal (fixes the
+        // "missing penny" drift caused by rounding each share).
+        totalToPay = roundToTwo(grand - runningTotal);
+      } else {
+        runningTotal += totalToPay;
+      }
 
       return {
         name: p.name || 'Unnamed',
