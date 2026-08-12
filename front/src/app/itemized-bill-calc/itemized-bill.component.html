@@ -7,11 +7,13 @@
       <div class="person-row">
         <input
           type="text"
+          min="0"
           [ngModel]="person.name"
           (ngModelChange)="updatePersonName($index, $event)"
           placeholder="Name" />
         <input
           type="number"
+          min="0"
           [ngModel]="person.individual_amount"
           (ngModelChange)="updatePersonAmount($index, $event)"
           placeholder="Amount" />
@@ -26,6 +28,7 @@
       Shared amount
       <input
         type="number"
+        min="0"
         [ngModel]="sharedAmount()"
         (ngModelChange)="sharedAmount.set($event)" />
     </label>

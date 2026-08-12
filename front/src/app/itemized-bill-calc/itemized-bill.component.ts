@@ -20,14 +20,6 @@ export class ItemizedBillComponent {
   sharedAmount = signal<number>(0);
   tipPercentage = signal<number>(15);
 
-  setSharedAmount(amount: number) {
-    this.sharedAmount.set(Math.max(0, Number(amount) || 0));
-  }
-
-  setTipPercentage(percentage: number) {
-    this.tipPercentage.set(Math.max(0, Number(percentage) || 0));
-  }
-
   subtotalIndividual = computed(() =>
     this.people().reduce((sum, p) => sum + (Number(p.individual_amount) || 0), 0)
   );
@@ -96,20 +88,11 @@ export class ItemizedBillComponent {
 
   updatePersonAmount(index: number, amount: number) {
     const updated = [...this.people()];
-    updated[index] = { ...updated[index], individual_amount: Math.max(0, Number(amount) || 0) };
+    updated[index] = { ...updated[index], individual_amount: amount };
     this.people.set(updated);
   }
 
   saveToDatabase() {
-    if (this.people().some(p => (Number(p.individual_amount) || 0) < 0)) {
-      alert('Individual amounts cannot be negative.');
-      return;
-    }
-    if (this.sharedAmount() < 0 || this.tipPercentage() < 0) {
-      alert('Shared amount and tip percentage cannot be negative.');
-      return;
-    }
-
     const payload = {
       people: this.people(),
       shared_amount: this.sharedAmount(),
