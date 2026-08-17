@@ -14,24 +14,6 @@
   perspective: 1000px;
 }
 
-/* Flip triggered by a class toggled on click (see component snippet in chat) */
-.calculator-card.is-flipping {
-  animation: card-flip 0.6s ease;
-}
-
-@keyframes card-flip {
-  0% {
-    transform: rotateY(0deg);
-  }
-  50% {
-    transform: rotateY(180deg);
-    box-shadow: 0 4px 14px #0da1dc;
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
-}
-
 .calculator-card h2 {
   font-size: 1.5rem;
   font-weight: 700;

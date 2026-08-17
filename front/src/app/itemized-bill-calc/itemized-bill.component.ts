@@ -11,12 +11,6 @@ import { BillService, IndividualBreakdown } from '../services/bill.service';
 })
 export class ItemizedBillComponent {
 
-  isFlipping = false;
-
-  flipCard() {
-  this.isFlipping = true;
-  setTimeout(() => this.isFlipping = false, 600); // matches animation duration
-}
   private billService = inject(BillService);
 
   people = signal<IndividualBreakdown[]>([

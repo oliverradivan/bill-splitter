@@ -11,12 +11,7 @@ import { ItemizedBillComponent } from '../itemized-bill-calc/itemized-bill.compo
   templateUrl: './bill-calculator.component.html',
 })
 export class BillCalculatorComponent {
-  isFlipping = false;
-
-flipCard() {
-  this.isFlipping = true;
-  setTimeout(() => this.isFlipping = false, 600); // matches animation duration
-}
+ 
   private billService = inject(BillService);
 
   billAmount = signal<number | null>(null);
