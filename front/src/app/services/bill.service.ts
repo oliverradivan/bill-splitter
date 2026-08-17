@@ -2,9 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// ============================================================
+
 // Simple calculator
-// ============================================================
 
 export interface CalculationPayload {
   bill_amount: number;
@@ -19,9 +18,7 @@ export interface CalculationResult extends CalculationPayload {
   amount_per_person: number;
 }
 
-// ============================================================
 // Itemized calculator
-// ============================================================
 
 export interface IndividualBreakdown {
   name: string;
@@ -50,12 +47,17 @@ export interface ItemizedCalculationResult {
   shared_total: number;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ 
+  providedIn: 'root'
+})
 export class BillService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8000/api/v1';
 
-  // --- simple calculator ---
+
+
+
+  //simple calculator
 
   saveCalculation(payload: CalculationPayload): Observable<CalculationResult> {
     return this.http.post<CalculationResult>(`${this.apiUrl}/calculate`, payload);
@@ -65,7 +67,9 @@ export class BillService {
     return this.http.get<CalculationResult[]>(`${this.apiUrl}/history`);
   }
 
-  // --- itemized calculator ---
+
+   
+  //itemized calculator
 
   saveItemizedCalculation(payload: ItemizedCalculationPayload): Observable<ItemizedCalculationResult> {
     return this.http.post<ItemizedCalculationResult>(`${this.apiUrl}/itemized-calculate`, payload);

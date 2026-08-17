@@ -21,7 +21,7 @@ export class ItemizedBillComponent {
   tipPercentage = signal<number>(15);
 
   subtotalIndividual = computed(() =>
-    this.people().reduce((sum, p) => sum + (Number(p.individual_amount) || 0), 0)
+    this.people().reduce((sum, person) => sum + (Number(person.individual_amount) || 0), 0)
   );
 
   subtotalTotal = computed(() => this.subtotalIndividual() + (Number(this.sharedAmount()) || 0));
@@ -58,9 +58,7 @@ export class ItemizedBillComponent {
 
       const isLast = index === people.length - 1;
       if (isLast) {
-        // Give the last person whatever's left over so the per-person
-        // totals always sum to exactly grandTotal (fixes the
-        // "missing penny" drift caused by rounding each share).
+     
         totalToPay = roundToTwo(grand - runningTotal);
       } else {
         runningTotal += totalToPay;

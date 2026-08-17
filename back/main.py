@@ -62,7 +62,6 @@ def get_history(db: Session = Depends(get_db)):
 
 
 
-
 # Itemized calculator
 class PersonInput(BaseModel):
     name: str
