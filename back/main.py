@@ -62,7 +62,7 @@ def get_history(db: Session = Depends(get_db)):
 
 
 
-# Itemized calculator
+# Itemized calc
 class PersonInput(BaseModel):
     name: str
     individual_amount: float = Field(ge=0)
@@ -111,7 +111,6 @@ def calculate_and_save_itemized(req: ItemizedCalculationRequest, db: Session = D
 
         is_last = i == len(req.people) - 1
         if is_last:
-            # Give the last person whatever's left over so the per-person totals always sum to exactly grand_total
             total_to_pay = round(grand_total - running_total, 2)
         else:
             running_total += total_to_pay
