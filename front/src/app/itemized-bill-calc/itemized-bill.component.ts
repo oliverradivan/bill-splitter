@@ -1,7 +1,7 @@
 import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BillService, IndividualBreakdown } from '../services/bill.service';
+import { BillService, IndividualBreakdown, ItemizedCalculationResult } from '../services/bill.service';
 
 @Component({
   selector: 'app-itemized-bill',
@@ -20,6 +20,9 @@ export class ItemizedBillComponent {
 
   sharedAmount = signal<number>(0);
   tipPercentage = signal<number>(15);
+
+  history = signal<ItemizedCalculationResult[]>([]);
+  showHistory = signal(false);
 
   subtotalIndividual = computed(() =>
     this.people().reduce((sum, person) => sum + (Number(person.individual_amount) || 0), 0)
@@ -59,7 +62,7 @@ export class ItemizedBillComponent {
 
       const isLast = index === people.length - 1;
       if (isLast) {
-     
+
         totalToPay = roundToTwo(grand - runningTotal);
       } else {
         runningTotal += totalToPay;
@@ -113,10 +116,37 @@ export class ItemizedBillComponent {
     };
 
     this.billService.saveItemizedCalculation(payload).subscribe({
-      next: (res) => console.log('Saved bill successfully:', res),
+      next: (res) => {
+        console.log('Saved bill successfully:', res);
+        if (this.showHistory()) {
+          this.viewHistory();
+        }
+      },
       error: (err) => console.error('error, couldn\'t save:', err)
     });
   }
+
+isLoadingHistory = signal(false);
+
+viewHistory() {
+  if (this.showHistory()) {
+    this.showHistory.set(false);
+    return;
+  }
+
+  this.isLoadingHistory.set(true);
+  this.billService.getItemizedHistory().subscribe({
+    next: (data) => {
+      this.history.set(data);
+      this.showHistory.set(true);
+      this.isLoadingHistory.set(false);
+    },
+    error: (err) => {
+      console.error('error, couldn\'t load history:', err);
+      this.isLoadingHistory.set(false);
+    }
+  });
+}
 }
 
 function roundToTwo(num: number): number {

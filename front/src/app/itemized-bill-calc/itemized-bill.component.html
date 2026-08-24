@@ -71,7 +71,32 @@
       </div>
     }
   </section>
-
   <button class="save-btn" (click)="saveToDatabase()">Save</button>
+
+  <button class="save-btn" (click)="viewHistory()">
+    {{ showHistory() ? 'Hide History' : 'History' }}
+  </button>
+
+  @if (isLoadingHistory()) {
+    <p>Loading...</p>
+  } @else if (showHistory()) {
+    <div class="history-list">
+      @if (history().length === 0) {
+        <p>No saved calculations yet.</p>
+      } @else {
+        @for (item of history(); track item.id) {
+          <div class="history-item">
+            <div>Grand total: {{ item.grand_total | number:'1.2-2' }}</div>
+            <div>Tip: {{ item.total_tip | number:'1.2-2' }}</div>
+            <ul>
+              @for (person of item.people_results; track person.name) {
+                <li>{{ person.name }}: {{ person.total_to_pay | number:'1.2-2' }}</li>
+              }
+            </ul>
+          </div>
+        }
+      }
+    </div>
+  }
 </div>
 </div>
