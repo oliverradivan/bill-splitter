@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field
 from typing import List
+import os
 
 import models
 from database import engine, get_db
@@ -13,7 +14,7 @@ app = FastAPI(title="Bill Calculator API", version="1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:4200").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

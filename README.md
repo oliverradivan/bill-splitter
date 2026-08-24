@@ -41,3 +41,18 @@ Built as a school final project using **Angular 17**, **Python FastAPI**, and **
          ▼
 [ PostgreSQL Database ] ─── (Visualized in pgAdmin 4)
  (Database: bill_splitter)
+
+---
+
+## Running with Docker
+
+The project is packaged as three services: `frontend` (Angular served by Nginx),
+`backend` (FastAPI), and `db` (PostgreSQL). From the project root, run:
+
+```bash
+docker compose up --build
+```
+
+Open `http://localhost:4200` to use the application. The API is available at
+`http://localhost:8000/docs`, and PostgreSQL data is retained in the named
+`postgres_data` Docker volume. Stop the stack with `docker compose down`.

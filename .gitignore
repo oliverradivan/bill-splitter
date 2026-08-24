@@ -45,3 +45,6 @@ Thumbs.db
 __pycache__/
 *.pyc
 *.db
+
+# Docker environment files
+.env
