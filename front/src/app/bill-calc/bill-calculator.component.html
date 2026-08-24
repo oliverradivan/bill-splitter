@@ -1,48 +1,5 @@
 <div>
-<div class="calculator-card">
-  <h2><i class="fa-solid fa-receipt"></i> Even Bill & Tip Splitter</h2>
 
-  <div class="form-grid">
-    <div class="input-group">
-      <label>Bill Amount ($)</label>
-      <input type="number" min="0" [ngModel]="billAmount()" (ngModelChange)="billAmount.set($event)" placeholder="0.00" />
-    </div>
-
-    <div class="input-group">
-      <label>Select Tip %</label>
-      <div class="tip-presets">
-        <button [class.active]="tipPercentage() === 10" (click)="setPresetTip(10)">10% 😡</button>
-        <button [class.active]="tipPercentage() === 15" (click)="setPresetTip(15)">15% 👌</button>
-        <button [class.active]="tipPercentage() === 20" (click)="setPresetTip(20)">20% 🤑</button>
-      </div>
-      <input type="number" min="0" [ngModel]="tipPercentage()" (ngModelChange)="tipPercentage.set($event)" placeholder="Custom Tip %" />
-    </div>
-
-    <div class="input-group">
-      <label>Number of People</label>
-      <input type="number" min="1" [ngModel]="peopleCount()" (ngModelChange)="peopleCount.set($event)" placeholder="1" />
-    </div>
-  </div>
-
-  <div class="summary-box">
-    <div class="summary-item">
-      <span>Total Tip</span>
-      <strong>{{ totalTip() | currency:'USD' }}</strong>
-    </div>
-    <div class="summary-item">
-      <span>Grand Total</span>
-      <strong>{{ grandTotal() | currency:'USD' }}</strong>
-    </div>
-    <div class="summary-item highlight">
-      <span>Amount Per Person:</span>
-      <strong>{{ amountPerPerson() }}</strong>
-    </div>
-  </div>
-
-  <button class="save-btn" (click)="saveCurrentCalculation()"> Save </button>
-</div>
-<hr>
-<hr>
 <div>
 <app-itemized-bill></app-itemized-bill>
 </div>
