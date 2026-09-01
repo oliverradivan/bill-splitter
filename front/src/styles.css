@@ -1,23 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   Bill Splitter — restyled to the Linear design language
+   Dark-mode-native, Inter Variable (cv01/ss03), weight 510 as signature,
+   near-transparent surfaces, whisper-thin white borders, indigo accent.
+   ========================================================================== */
+
+:root {
+  --bs-bg: #08090a;
+  --bs-panel: #0f1011;
+  --bs-surface: #191a1b;
+  --bs-surface-hover: #28282c;
+
+  --bs-text: #f7f8f8;
+  --bs-text-secondary: #d0d6e0;
+  --bs-text-tertiary: #8a8f98;
+  --bs-text-quaternary: #62666d;
+
+  --bs-indigo: #5e6ad2;
+  --bs-violet: #7170ff;
+  --bs-violet-hover: #828fff;
+
+  --bs-danger: #e5484d;
+  --bs-danger-bg: rgba(229, 72, 77, 0.12);
+
+  --bs-success: #27a644;
+
+  --bs-border-subtle: rgba(255, 255, 255, 0.05);
+  --bs-border: rgba(255, 255, 255, 0.08);
+
+  --bs-font: "Inter Variable", "SF Pro Display", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 /* ============ Base / Shared ============ */
 .calculator-card {
   max-width: 480px;
   margin: 0 auto;
   padding: 32px;
-  background: #d5e8f8;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px #0da1dc;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #1f2937;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  perspective: 1000px;
+  background: var(--bs-panel);
+  border: 1px solid var(--bs-border);
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px, rgba(0, 0, 0, 0.4) 0px 2px 4px;
+  font-family: var(--bs-font);
+  font-feature-settings: "cv01", "ss03";
+  color: var(--bs-text-secondary);
+  cursor: default;
 }
 
 .calculator-card h2 {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: #0da1dc;
+  font-weight: 510;
+  letter-spacing: -0.288px;
+  color: var(--bs-text);
   margin-top: 0;
   margin-bottom: 24px;
   display: flex;
@@ -26,15 +60,14 @@
 }
 
 .calculator-card h2 i {
-  color: #0da1dc;
+  color: var(--bs-violet);
 }
 
 .calculator-card h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #4b5563;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  font-weight: 510;
+  color: var(--bs-text-tertiary);
+  letter-spacing: -0.13px;
   margin: 0 0 12px;
 }
 
@@ -61,34 +94,35 @@
 }
 
 .input-group label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #4b5563;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  font-weight: 510;
+  color: var(--bs-text-tertiary);
+  letter-spacing: -0.13px;
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 14px;
   font-size: 1rem;
-  color: #0da1dc;
-  background-color: #f9fafb;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+  font-weight: 400;
+  color: var(--bs-text);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bs-border);
+  border-radius: 6px;
   box-sizing: border-box;
   outline: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .input-group input:focus {
-  border-color: #0da1dc;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(13, 161, 220, 0.1);
+  border-color: var(--bs-violet);
+  background-color: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(113, 112, 255, 0.16);
 }
 
 .input-group input::placeholder {
-  color: #9ca3af;
+  color: var(--bs-text-quaternary);
 }
 
 /* ============ Tip presets (shared) ============ */
@@ -101,66 +135,67 @@
 
 .tip-presets button {
   padding: 10px 14px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #e54646;
-  background-color: #eef2ff;
-  border: 2px solid transparent;
-  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 510;
+  color: var(--bs-text-secondary);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bs-border);
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .tip-presets button:hover {
-  background-color: #e0e7ff;
+  background-color: var(--bs-surface-hover);
 }
 
 .tip-presets button.active {
-  background-color: #e54646;
-  color: #000000;
-  border-color: #e54646;
-  box-shadow: 0 4px 12px rgba(241, 111, 111, 0.994);
+  background-color: var(--bs-indigo);
+  color: #ffffff;
+  border-color: var(--bs-indigo);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px;
 }
 
 /* ============ Summary / totals box (shared) ============ */
 .summary-box {
-  background: linear-gradient(135deg, #0da1dc 0%, #0da1dc 100%);
-  color: #00000076;
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bs-border);
+  color: var(--bs-text-secondary);
+  border-radius: 8px;
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-bottom: 24px;
-  box-shadow: 0 8px 20px rgba(30, 27, 75, 0.2);
 }
 
 .summary-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.95rem;
-  color: #c7d2fe;
+  font-size: 0.9rem;
+  color: var(--bs-text-tertiary);
 }
 
 .summary-item strong {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #ffffff;
+  font-weight: 510;
+  color: var(--bs-text);
 }
 
 .summary-item.highlight {
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid var(--bs-border);
   padding-top: 14px;
   margin-top: 2px;
-  color: #000000;
-  font-weight: 600;
+  color: var(--bs-text-secondary);
+  font-weight: 510;
 }
 
 .summary-item.highlight strong {
   font-size: 1.6rem;
-  font-weight: 700;
-  color: #000000;
+  font-weight: 590;
+  color: var(--bs-violet);
 }
 
 /* ============ Save button (shared) ============ */
@@ -168,23 +203,23 @@
   width: 100%;
   padding: 14px 20px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 510;
   color: #ffffff;
-  background-color: #0da1dc;
+  background-color: var(--bs-indigo);
   border: none;
-  border-radius: 10px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+  transition: background-color 0.15s ease, transform 0.1s ease,
+    box-shadow 0.15s ease;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px;
 }
 
 .save-btn:hover {
-  background-color: #1fde0a;
-  box-shadow: 0 6px 18px rgb(6, 244, 10);
+  background-color: var(--bs-violet-hover);
 }
 
 .save-btn:active {
@@ -208,42 +243,44 @@
 .person-row input {
   flex: 1;
   min-width: 0;
-  padding: 12px 16px;
+  padding: 12px 14px;
   font-size: 1rem;
-  color: #0da1dc;
-  background-color: #f9fafb;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+  color: var(--bs-text);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bs-border);
+  border-radius: 6px;
   box-sizing: border-box;
   outline: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .person-row input:focus {
-  border-color: #0da1dc;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(13, 161, 220, 0.1);
+  border-color: var(--bs-violet);
+  background-color: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(113, 112, 255, 0.16);
 }
 
 .person-row input::placeholder {
-  color: #9ca3af;
+  color: var(--bs-text-quaternary);
 }
 
 .person-row button {
   flex-shrink: 0;
   padding: 10px 14px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #e54646;
-  background-color: #f5a9a9b6;
-  border: 2px solid transparent;
-  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 510;
+  color: var(--bs-danger);
+  background-color: var(--bs-danger-bg);
+  border: 1px solid transparent;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .person-row button:hover:not(:disabled) {
-  background-color: #ff0000;
+  background-color: rgba(229, 72, 77, 0.22);
+  border-color: rgba(229, 72, 77, 0.4);
 }
 
 .person-row button:disabled {
@@ -253,19 +290,19 @@
 
 .people-list > button:last-child {
   align-self: flex-start;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #0da1dc;
-  background-color: #eef2ff;
-  border: 2px solid transparent;
-  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 510;
+  color: var(--bs-violet);
+  background-color: rgba(113, 112, 255, 0.08);
+  border: 1px solid transparent;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease;
 }
 
 .people-list > button:last-child:hover {
-  background-color: #e0e7ff;
+  background-color: rgba(113, 112, 255, 0.16);
 }
 
 /* ============ Itemized-only: shared amount & tip ============ */
@@ -279,33 +316,32 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #4b5563;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  font-weight: 510;
+  color: var(--bs-text-tertiary);
+  letter-spacing: -0.13px;
 }
 
 .shared-and-tip input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 14px;
   font-size: 1rem;
   font-weight: 400;
-  text-transform: none;
   letter-spacing: normal;
-  color: #0da1dc;
-  background-color: #f9fafb;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
+  color: var(--bs-text);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--bs-border);
+  border-radius: 6px;
   box-sizing: border-box;
   outline: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .shared-and-tip input:focus {
-  border-color: #0da1dc;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(13, 161, 220, 0.1);
+  border-color: var(--bs-violet);
+  background-color: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(113, 112, 255, 0.16);
 }
 
 /* ============ Itemized-only: per-person breakdown ============ */
@@ -315,9 +351,9 @@
   gap: 12px;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--bs-border-subtle);
   font-size: 0.9rem;
-  color: #4b5563;
+  color: var(--bs-text-tertiary);
 }
 
 .breakdown-row:last-child {
@@ -325,19 +361,29 @@
 }
 
 .breakdown-row span:first-child {
-  font-weight: 600;
-  color: #1f2937;
+  font-weight: 510;
+  color: var(--bs-text);
 }
 
 .breakdown-row strong {
-  color: #0da1dc;
+  color: var(--bs-violet);
+}
+
+/* ============ Focus states ============ */
+
+.tip-presets button:focus-visible,
+.save-btn:focus-visible,
+.person-row button:focus-visible,
+.people-list > button:last-child:focus-visible {
+  outline: 2px solid var(--bs-violet);
+  outline-offset: 2px;
 }
 
 /* ============ Responsive ============ */
 @media (max-width: 480px) {
   .calculator-card {
     padding: 20px 14px;
-    border-radius: 14px;
+    border-radius: 8px;
     max-width: 100%;
   }
 
